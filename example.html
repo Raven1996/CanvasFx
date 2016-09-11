@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>Canvas Filter</title>
+	<style type="text/css">
+	a{color:#808080; text-decoration:none; font-family:sans-serif; font-weight:lighter; margin:0 5px;}
+	a:hover{color:#c0c0c0;}
+	</style>
+</head>
+<body style="background-color:#202020">
+
+	<div id="box" style="margin:20px auto; width:102px; height:102px;">
+		<canvas id="canvasa" width="100" height="100" style="position:absolute; display:none; border:#404040 1px solid;">
+		</canvas>
+
+		<canvas id="canvasb" width="100" height="100" style="position:absolute; border:#404040 1px solid;">
+		</canvas>
+	</div
+	<br />
+	<div style="text-align:center; margin-top:20px; font-size:20px;">
+		<a href = "javascript:noEffect()" >NoEffect</a>
+		<a href = "javascript:greyEffect(0)" >Grey</a>
+		<a href = "javascript:hslEffect(15,25,-10)" >HSL</a>
+		<a href = "javascript:motionHarrisEffect(0.5,30,0)" >MotionHarris</a>
+		<a href = "javascript:zoomHarrisEffect(0.5)" >ZoomHarris</a>
+		<a href = "javascript:distortionEffect(-0.25)" >Distortion</a>
+		<a href = "javascript:normalBlurEffect(6,0.25,0,0)" >NormalBlur</a>
+		<a href = "javascript:lenBlurEffect(4,0.25,0,0)" >LenBlur</a>
+		<a href = "javascript:motionBlurEffect(12,30,0.25,0)" >MotionBlur</a>
+		<a href = "javascript:zoomBlurEffect(0.05,0.25)" >ZoomBlur</a>
+		<a href = "javascript:mosaicEffect(20,1)" >Mosaic</a>
+		<a href = "javascript:applyEffect()" >Apply</a>
+	</div>
+	
+	<script src="src/canvasfx.js"></script>
+	
+	<script>
+		var image = new Image()
+		window.onload = function(){
+			setCanvasById("canvasa", "canvasb")  // before using canvasfx function
+			image.src = "img/iron.jpg"  // sample image is from http://www.polayoutu.com/collections/4
+			image.onload = function(){
+				document.getElementById("box").style.width=(image.width+2)+"px"
+				document.getElementById("box").style.height=(image.height+2)+"px"
+				canvasA.setAttribute("width", image.width)
+				canvasA.setAttribute("height", image.height)
+				canvasB.setAttribute("width", image.width)
+				canvasB.setAttribute("height", image.height)
+				ctxA.drawImage(image, 0, 0, canvasA.width, canvasA.height)
+				noEffect()
+			}
+			
+		}
+	</script>
+	
+</body>
+</html>
