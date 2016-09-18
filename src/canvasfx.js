@@ -732,7 +732,7 @@ function mosaicEffect(size, type){
 	case 2:  // a cross in the center
 		var halfsizeH, halfsizeW
 		halfsizeH = Math.ceil(Math.ceil(fullH/2) / size) * size
-		halfsizeW = Math.ceil(Math.ceil(fullH/2) / size) * size
+		halfsizeW = Math.ceil(Math.ceil(fullW/2) / size) * size
 		beginI = Math.round(fullH>>1)-halfsizeH
 		endI = Math.round(fullH>>1)+halfsizeH
 		beginJ = Math.round(fullW>>1)-halfsizeW
