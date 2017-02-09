@@ -110,10 +110,10 @@ function motionHarrisEffect(length, degree, mask, centerX, centerY){  // Harris 
 	var halfD_Re = 1 / Math.sqrt(halfW*halfW + halfH*halfH);
 	degree -= 90;
 	var ratioX = Math.cos(degree/180*Math.PI), ratioY = Math.sin(degree/180*Math.PI);
-	if((typeof(centerX) == "undefined") || (typeof(centerY) == "undefined")){
-		centerX = halfW;
-		centerY = halfH;
-	}
+	if(typeof(centerX) == "undefined") centerX = halfW;
+	else centerX *= fullW - 1;
+	if(typeof(centerY) == "undefined") centerY = halfH;
+	else centerY *= fullH - 1;
 	
 	for(var i = 0; i<fullH; i ++)
 		for(var j = 0; j<fullW; j ++){
@@ -190,10 +190,10 @@ function zoomHarrisEffect(strength, centerX, centerY){  // Harris camera
 	var pxArr = [];
 	var fullH = canvasB.height, fullW = canvasB.width;
 	var halfH = (fullH-1)*0.5, halfW = (fullW-1)*0.5;
-	if((typeof(centerX) == "undefined") || (typeof(centerY) == "undefined")){
-		centerX = halfW;
-		centerY = halfH;
-	}
+	if(typeof(centerX) == "undefined") centerX = halfW;
+	else centerX *= fullW - 1;
+	if(typeof(centerY) == "undefined") centerY = halfH;
+	else centerY *= fullH - 1;
 	
 	var ratio = [];
 	ratio[0] = (10+strength) * 0.1;
@@ -302,7 +302,7 @@ function distortionEffect(strength){  // recommend strength from -0.5 to 0.5
 	ctxB.putImageData(imgData, 0, 0, 0, 0, fullW, fullH);
 }
 
-function normalBlurEffect(radius, brightness, mask, type, centerX, centerY){
+function normalBlurEffect(radius, lggamma, mask, type, centerX, centerY){
 	var imgData = ctxA.getImageData(0, 0, canvasA.width, canvasA.height);
 	var pxData = imgData.data;
 	var tmpPxArr = [], pxArr = [], rArr=[];
@@ -310,12 +310,12 @@ function normalBlurEffect(radius, brightness, mask, type, centerX, centerY){
 	var halfH = (fullH-1)*0.5, halfW = (fullW-1)*0.5;
 	var halfH_Re = 1 / halfH, halfW_Re = 1 / halfW;
 	var halfD_Re = 1 / Math.sqrt(halfW*halfW + halfH*halfH);
-	if((typeof(centerX) == "undefined") || (typeof(centerY) == "undefined")){
-		centerX = halfW;
-		centerY = halfH;
-	}
+	if(typeof(centerX) == "undefined") centerX = halfW;
+	else centerX *= fullW - 1;
+	if(typeof(centerY) == "undefined") centerY = halfH;
+	else centerY *= fullH - 1;
 	
-	var power = Math.exp(2.3*brightness);  // 0 ~ 1 remap the value
+	var power = Math.exp(2.3*lggamma);  // 0 ~ 1 remap the value
 	
 	for(var i = 0; i<fullH; i ++)
 		for(var j = 0; j<fullW; j ++){
@@ -411,7 +411,7 @@ function fastSqrt(num){  // https://en.wikipedia.org/wiki/Fast_inverse_square_ro
 // actually very slow
 */
 
-function lenBlurEffect(radius, brightness, mask, centerX, centerY){
+function lenBlurEffect(radius, lggamma, mask, centerX, centerY){
 	var imgData = ctxA.getImageData(0, 0, canvasA.width, canvasA.height);
 	var pxData = imgData.data;
 	var tmpPxArr = [];
@@ -419,12 +419,12 @@ function lenBlurEffect(radius, brightness, mask, centerX, centerY){
 	var halfH = (fullH-1)*0.5, halfW = (fullW-1)*0.5;
 	var halfH_Re = 1 / halfH, halfW_Re = 1 / halfW;
 	var halfD_Re = 1 / Math.sqrt(halfW*halfW + halfH*halfH);
-	if((typeof(centerX) == "undefined") || (typeof(centerY) == "undefined")){
-		centerX = halfW;
-		centerY = halfH;
-	}
+	if(typeof(centerX) == "undefined") centerX = halfW;
+	else centerX *= fullW - 1;
+	if(typeof(centerY) == "undefined") centerY = halfH;
+	else centerY *= fullH - 1;
 	
-	var power = Math.exp(2.3*brightness);  // 0 ~ 1 remap the value
+	var power = Math.exp(2.3*lggamma);  // 0 ~ 1 remap the value
 	
 	for(var i = 0; i<fullH; i ++)
 		for(var j = 0; j<fullW; j ++){
@@ -479,13 +479,13 @@ function lenBlurEffect(radius, brightness, mask, centerX, centerY){
 
 /*	
 	// a circle random method just for referring
-	r = (1-Math.pow(Math.random(),2)) * radius;
-	theta = Math.random()*2*Math.PI;
+	var r = Math.pow(Math.random(),0.5) * radius;
+	var theta = Math.random()*2*Math.PI;
 	var dx = Math.cos(theta)*r;
 	var dy = Math.sin(theta)*r;
 */
 
-function motionBlurEffect(length, degree, brightness, mask, centerX, centerY){
+function motionBlurEffect(length, degree, lggamma, mask, centerX, centerY){
 	var imgData = ctxA.getImageData(0, 0, canvasA.width, canvasA.height);
 	var pxData = imgData.data;
 	var tmpPxArr = [];
@@ -493,10 +493,10 @@ function motionBlurEffect(length, degree, brightness, mask, centerX, centerY){
 	var halfH = (fullH-1)*0.5, halfW = (fullW-1)*0.5;
 	var halfH_Re = 1 / halfH, halfW_Re = 1 / halfW;
 	var halfD_Re = 1 / Math.sqrt(halfW*halfW + halfH*halfH);
-	if((typeof(centerX) == "undefined") || (typeof(centerY) == "undefined")){
-		centerX = halfW;
-		centerY = halfH;
-	}
+	if(typeof(centerX) == "undefined") centerX = halfW;
+	else centerX *= fullW - 1;
+	if(typeof(centerY) == "undefined") centerY = halfH;
+	else centerY *= fullH - 1;
 	
 	degree %= 180;
 	if(degree < 0) degree += 180;
@@ -512,7 +512,7 @@ function motionBlurEffect(length, degree, brightness, mask, centerX, centerY){
 		ratioY = 1;
 	}
 	
-	var power = Math.exp(2.3*brightness);  // 0 ~ 1 remap the value
+	var power = Math.exp(2.3*lggamma);  // 0 ~ 1 remap the value
 
 	for(var i = 0; i<fullH; i ++)
 		for(var j = 0; j<fullW; j ++){
@@ -583,18 +583,18 @@ function motionBlurEffect(length, degree, brightness, mask, centerX, centerY){
 	ctxB.putImageData(imgData, 0, 0, 0, 0, fullW, fullH);
 }
 
-function zoomBlurEffect(strength, brightness, type, centerX, centerY){
+function zoomBlurEffect(strength, lggamma, type, centerX, centerY){
 	var imgData = ctxA.getImageData(0, 0, canvasA.width, canvasA.height);
 	var pxData = imgData.data;
 	var tmpPxArr = [];
 	var fullH = canvasB.height, fullW = canvasB.width;
 	var halfH = (fullH-1)*0.5, halfW = (fullW-1)*0.5;
-	if((typeof(centerX) == "undefined") || (typeof(centerY) == "undefined")){
-		centerX = halfW;
-		centerY = halfH;
-	}
+	if(typeof(centerX) == "undefined") centerX = halfW;
+	else centerX *= fullW - 1;
+	if(typeof(centerY) == "undefined") centerY = halfH;
+	else centerY *= fullH - 1;
 	
-	var power = Math.exp(2.3*brightness);  // 0 ~ 1 remap the value
+	var power = Math.exp(2.3*lggamma);  // 0 ~ 1 remap the value
 	
 	for(var i = 0; i<fullH; i ++)
 		for(var j = 0; j<fullW; j ++){
